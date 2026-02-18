@@ -7,104 +7,111 @@ export default function Home() {
   const chatRef = useRef(null);
 
   const sendMessage = async () => {
-  if (!input.trim()) return;
+    if (!input.trim()) return;
 
-  const updatedMessages = [
-    ...messages,
-    { role: "user", content: input }
-  ];
+    const updatedMessages = [
+      ...messages,
+      { role: "user", content: input },
+    ];
 
-  setMessages(updatedMessages);
-  setInput("");
-  setLoading(true);
+    setMessages(updatedMessages);
+    setInput("");
+    setLoading(true);
 
-  try {
-    const res = await fetch("/api/nexis", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: updatedMessages }),
-    });
+    try {
+      const res = await fetch("/api/nexis", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: updatedMessages }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) {
-      throw new Error(JSON.stringify(data.error));
+      if (!res.ok) {
+        throw new Error(JSON.stringify(data.error));
+      }
+
+      setMessages([
+        ...updatedMessages,
+        { role: "assistant", content: data.result },
+      ]);
+    } catch (err) {
+      setMessages([
+        ...updatedMessages,
+        { role: "assistant", content: "Error connecting to Nexis." },
+      ]);
     }
 
-    setMessages([
-      ...updatedMessages,
-      { role: "assistant", content: data.result }
-    ]);
-  } catch (err) {
-    setMessages([
-      ...updatedMessages,
-      { role: "assistant", content: "Error connecting to Nexis." }
-    ]);
-  }
+    setLoading(false);
+  };
 
-  setLoading(false);
-};
-
+  // Auto-scroll to bottom
   useEffect(() => {
     if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+      chatRef.current.scrollTo({
+        top: chatRef.current.scrollHeight,
+        behavior: "smooth",
+      });
     }
   }, [messages]);
 
   return (
     <div style={styles.container}>
-     <div style={styles.chatWrapper}>
-      <div style={styles.chatContainer} ref={chatRef}>
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            style={{
-              ...styles.message,
-              alignSelf: msg.role === "user" ? "flex-end" : "flex-start",
-              backgroundColor:
-                msg.role === "user" ? "#2563eb" : "#1f2937",
-            }}
-          >
-            {msg.content}
-          </div>
-        ))}
+      <div style={styles.chatWrapper}>
+        {/* Chat messages */}
+        <div style={styles.chatContainer} ref={chatRef}>
+          {messages.map((msg, i) => (
+            <div
+              key={i}
+              style={{
+                ...styles.message,
+                alignSelf: msg.role === "user" ? "flex-end" : "flex-start",
+                backgroundColor:
+                  msg.role === "user" ? "#2563eb" : "#1f2937",
+              }}
+            >
+              {msg.content}
+            </div>
+          ))}
 
-        {loading && (
-          <div style={{ ...styles.message, backgroundColor: "#1f2937" }}>
-            Nexis is thinking...
-          </div>
-        )}
-      </div>
+          {loading && (
+            <div style={{ ...styles.message, backgroundColor: "#1f2937" }}>
+              Nexis is thinking...
+            </div>
+          )}
+        </div>
 
-      <div style={styles.inputContainer}>
-        <input
-          style={styles.input}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Message Nexis..."
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-        />
-        <button style={styles.button} onClick={sendMessage}>
-          Send
-        </button>
+        {/* Input bar */}
+        <div style={styles.inputContainer}>
+          <input
+            style={styles.input}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Message Nexis..."
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          />
+          <button style={styles.button} onClick={sendMessage}>
+            Send
+          </button>
+        </div>
       </div>
     </div>
- </div>
   );
 }
 
+// Styles
 const styles = {
   container: {
     height: "100vh",
     display: "flex",
-    justifyContent: "center", // 👈 centers horizontally
+    justifyContent: "center",
     backgroundColor: "#0f172a",
     color: "white",
   },
 
   chatWrapper: {
     width: "100%",
-    maxWidth: "800px", // 👈 controls how centered it feels
+    maxWidth: "800px",
     display: "flex",
     flexDirection: "column",
     height: "100vh",
@@ -115,7 +122,6 @@ const styles = {
     overflowY: "auto",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "flex-end",
     padding: "30px 20px",
     gap: "10px",
     maskImage: "linear-gradient(to top, black 75%, transparent 100%)",
@@ -129,6 +135,7 @@ const styles = {
     maxWidth: "75%",
     fontSize: "15px",
     lineHeight: "1.5",
+    wordBreak: "break-word",
   },
 
   inputContainer: {
