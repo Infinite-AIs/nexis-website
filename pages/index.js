@@ -23,7 +23,12 @@ export default function Home() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Something went wrong");
+       throw new Error(
+  typeof data.error === "string"
+    ? data.error
+    : JSON.stringify(data.error)
+);
+
       }
 
       setResponse(data.result);
