@@ -5,16 +5,16 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { prompt } = req.body;
+  const { messages } = req.body;
 
-  if (!prompt) {
-    return res.status(400).json({ error: "No prompt provided" });
+  if (!messages || !Array.isArray(messages)) {
+    return res.status(400).json({ error: "Messages array required" });
   }
 
   const API_KEY = process.env.GROQ_API_KEY;
 
   if (!API_KEY) {
-    return res.status(500).json({ error: "Missing GROQ_API_KEY in environment variables" });
+    return res.status(500).json({ error: "Missing GROQ_API_KEY" });
   }
 
   try {
@@ -27,10 +27,7 @@ export default async function handler(req, res) {
             role: "system",
             content: "You are Nexis, a fast, intelligent AI assistant."
           },
-          {
-            role: "user",
-            content: prompt
-          }
+          ...messages
         ],
         temperature: 0.7
       },
@@ -47,8 +44,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ result: reply });
 
   } catch (error) {
-    console.error("Groq API Error:", error.response?.data || error.message);
-
+    console.error("Groq Error:", error.response?.data || error.message);
     return res.status(500).json({
       error: error.response?.data || error.message
     });
