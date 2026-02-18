@@ -27,9 +27,7 @@ export default function Home() {
 
       const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(JSON.stringify(data.error));
-      }
+      if (!res.ok) throw new Error(JSON.stringify(data.error));
 
       setMessages([
         ...updatedMessages,
@@ -45,7 +43,7 @@ export default function Home() {
     setLoading(false);
   };
 
-  // Auto-scroll to bottom
+  // Auto-scroll to bottom when new message arrives
   useEffect(() => {
     if (chatRef.current) {
       chatRef.current.scrollTo({
@@ -81,7 +79,7 @@ export default function Home() {
           )}
         </div>
 
-        {/* Input bar */}
+        {/* Input bar stays pinned at bottom */}
         <div style={styles.inputContainer}>
           <input
             style={styles.input}
@@ -99,7 +97,6 @@ export default function Home() {
   );
 }
 
-// Styles
 const styles = {
   container: {
     height: "100vh",
