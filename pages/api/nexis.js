@@ -9,9 +9,9 @@ export default async function handler(req, res) {
       "https://api.groq.com/openai/v1/chat/completions",
       {
         {
-  model: "llama-3.1-8b-instant",
-  messages: [
-    { role: "user", content: prompt }
+          model: "llama-3.1-8b-instant",
+          messages: [
+           { role: "user", content: prompt }
   ]
 }
 
