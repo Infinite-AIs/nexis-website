@@ -95,47 +95,60 @@ const styles = {
   container: {
     height: "100vh",
     display: "flex",
-    flexDirection: "column",
+    justifyContent: "center", // 👈 centers horizontally
     backgroundColor: "#0f172a",
     color: "white",
   },
-chatContainer: {
-  flex: 1,
-  overflowY: "auto",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "flex-end", // 👈 THIS anchors content to bottom
-  padding: "20px",
-  gap: "10px",
-  maskImage: "linear-gradient(to top, black 70%, transparent 100%)",
-  WebkitMaskImage: "linear-gradient(to top, black 70%, transparent 100%)",
-},
+
+  chatWrapper: {
+    width: "100%",
+    maxWidth: "800px", // 👈 controls how centered it feels
+    display: "flex",
+    flexDirection: "column",
+    height: "100vh",
+  },
+
+  chatContainer: {
+    flex: 1,
+    overflowY: "auto",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    padding: "30px 20px",
+    gap: "10px",
+    maskImage: "linear-gradient(to top, black 75%, transparent 100%)",
+    WebkitMaskImage:
+      "linear-gradient(to top, black 75%, transparent 100%)",
+  },
 
   message: {
     padding: "12px 16px",
     borderRadius: "18px",
-    maxWidth: "70%",
+    maxWidth: "75%",
     fontSize: "15px",
-    lineHeight: "1.4",
+    lineHeight: "1.5",
   },
+
   inputContainer: {
     display: "flex",
-    padding: "15px",
+    padding: "20px",
     borderTop: "1px solid #1e293b",
     backgroundColor: "#0f172a",
   },
+
   input: {
     flex: 1,
-    padding: "12px",
-    borderRadius: "12px",
+    padding: "14px",
+    borderRadius: "14px",
     border: "none",
     outline: "none",
-    fontSize: "14px",
+    fontSize: "15px",
     marginRight: "10px",
   },
+
   button: {
-    padding: "12px 18px",
-    borderRadius: "12px",
+    padding: "14px 20px",
+    borderRadius: "14px",
     border: "none",
     backgroundColor: "#2563eb",
     color: "white",
