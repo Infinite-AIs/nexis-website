@@ -25,10 +25,11 @@ export default async function handler(req, res) {
       result: response.data.choices[0].message.content
     });
 
-  } catch (error) {
-    console.error(error.response?.data || error.message);
-    res.status(500).json({
-      error: error.response?.data || error.message
-    });
-  }
+} catch (error) {
+  console.error("FULL ERROR:", error.response?.data || error);
+
+  res.status(500).json({
+    error: JSON.stringify(error.response?.data || error.message)
+  });
+}
 }
