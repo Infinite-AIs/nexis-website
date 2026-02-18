@@ -53,6 +53,7 @@ export default function Home() {
 
   return (
     <div style={styles.container}>
+     <div style={styles.chatWrapper}>
       <div style={styles.chatContainer} ref={chatRef}>
         {messages.map((msg, index) => (
           <div
