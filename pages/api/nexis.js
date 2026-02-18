@@ -1,4 +1,5 @@
 import axios from 'axios';
+console.log('Calling Groq API...');
 
 export default async function handler(req, res) {
   const prompt = req.body.prompt;
