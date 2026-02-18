@@ -91,18 +91,18 @@ const styles = {
     backgroundColor: "#0f172a",
     color: "white",
   },
-  chatContainer: {
-    flex: 1,
-    overflowY: "auto",
-    display: "flex",
-    flexDirection: "column",
-    padding: "20px",
-    gap: "10px",
-    maskImage:
-      "linear-gradient(to top, black 70%, transparent 100%)",
-    WebkitMaskImage:
-      "linear-gradient(to top, black 70%, transparent 100%)",
-  },
+chatContainer: {
+  flex: 1,
+  overflowY: "auto",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "flex-end", // 👈 THIS anchors content to bottom
+  padding: "20px",
+  gap: "10px",
+  maskImage: "linear-gradient(to top, black 70%, transparent 100%)",
+  WebkitMaskImage: "linear-gradient(to top, black 70%, transparent 100%)",
+},
+
   message: {
     padding: "12px 16px",
     borderRadius: "18px",
