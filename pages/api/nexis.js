@@ -1,20 +1,39 @@
 import axios from "axios";
 
 export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
   const { prompt } = req.body;
+
+  if (!prompt) {
+    return res.status(400).json({ error: "No prompt provided" });
+  }
+
   const API_KEY = process.env.GROQ_API_KEY;
+
+  if (!API_KEY) {
+    return res.status(500).json({ error: "Missing GROQ_API_KEY in environment variables" });
+  }
 
   try {
     const response = await axios.post(
       "https://api.groq.com/openai/v1/chat/completions",
       {
-        {
-          model: "llama-3.1-8b-instant",
-          messages: [
-           { role: "user", content: prompt }
-  ]
-}
-
+        model: "llama-3.1-8b-instant",
+        messages: [
+          {
+            role: "system",
+            content: "You are Nexis, a fast, intelligent AI assistant."
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        temperature: 0.7
+      },
       {
         headers: {
           "Authorization": `Bearer ${API_KEY}`,
@@ -23,15 +42,15 @@ export default async function handler(req, res) {
       }
     );
 
-    res.status(200).json({
-      result: response.data.choices[0].message.content
+    const reply = response.data.choices[0].message.content;
+
+    return res.status(200).json({ result: reply });
+
+  } catch (error) {
+    console.error("Groq API Error:", error.response?.data || error.message);
+
+    return res.status(500).json({
+      error: error.response?.data || error.message
     });
-
-} catch (error) {
-  console.error("FULL ERROR:", error.response?.data || error);
-
-  res.status(500).json({
-    error: JSON.stringify(error.response?.data || error.message)
-  });
-}
+  }
 }
