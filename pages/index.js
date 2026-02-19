@@ -125,13 +125,6 @@ function TypingDots() {
     </div>
   );
 }
-// call on page load
-fetch("/api/active", { method: "POST" });
-
-// then every 30 seconds
-setInterval(() => {
-  fetch("/api/active", { method: "POST" });
-}, 30000);
 
 const styles = {
   container: {
