@@ -27,13 +27,13 @@ export default function Home() {
 
       const data = await res.json();
 
-      if (!res.ok) throw new Error(JSON.stringify(data.error));
+      if (!res.ok) throw new Error();
 
       setMessages([
         ...updatedMessages,
         { role: "assistant", content: data.result },
       ]);
-    } catch (err) {
+    } catch {
       setMessages([
         ...updatedMessages,
         { role: "assistant", content: "Error connecting to Nexis." },
@@ -43,7 +43,7 @@ export default function Home() {
     setLoading(false);
   };
 
-  // Auto-scroll to bottom when new message arrives
+  // Auto-scroll to bottom
   useEffect(() => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
@@ -53,8 +53,9 @@ export default function Home() {
   return (
     <div style={styles.container}>
       <div style={styles.chatWrapper}>
-        {/* Chat messages */}
         <div style={styles.chatContainer} ref={chatRef}>
+          <div style={{ flexGrow: 1 }} /> {/* 👈 pushes messages to bottom */}
+
           {messages.map((msg, i) => (
             <div
               key={i}
@@ -76,7 +77,6 @@ export default function Home() {
           )}
         </div>
 
-        {/* Input bar */}
         <div style={styles.inputContainer}>
           <input
             style={styles.input}
@@ -118,9 +118,6 @@ const styles = {
     flexDirection: "column",
     padding: "30px 20px",
     gap: "10px",
-    maskImage: "linear-gradient(to top, black 70%, transparent 100%)", // fade at top
-    WebkitMaskImage:
-      "linear-gradient(to top, black 70%, transparent 100%)",
   },
 
   message: {
