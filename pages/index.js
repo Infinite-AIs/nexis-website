@@ -2,6 +2,15 @@ import { useRouter } from "next/router";
 import { useState, useRef, useEffect } from "react";
 
 export default function Home() {
+  const router = useRouter();
+
+useEffect(() => {
+  const session = localStorage.getItem("session");
+  if (!session) {
+    router.push("/login");
+  }
+}, []);
+
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
