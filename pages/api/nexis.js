@@ -1,3 +1,20 @@
+import { supabase } from "../../utils/supabaseClient";
+
+export default async function handler(req, res) {
+  if (req.method === "POST") {
+    const { messages } = req.body;
+
+    // example: fetch AI response from database or send request
+    const { data, error } = await supabase.from("profiles").select("*");
+
+    if (error) return res.status(500).json({ error: error.message });
+
+    res.status(200).json({ result: data });
+  } else {
+    res.status(405).json({ error: "Method not allowed" });
+  }
+}
+
 <script type="module">
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
