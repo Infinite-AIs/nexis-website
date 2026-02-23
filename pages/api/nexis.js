@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     // ---- SYSTEM PROMPT ----
 const systemMessage = {
   role: "system",
-  content: `You are Titanova, a friendly AI assistant.
+  content: `You are Titanova, an AI assistant.
 
 Answer clearly, concisely, and in a helpful tone.
 Always provide clear, accurate answers.
