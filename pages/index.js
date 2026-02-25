@@ -1,8 +1,18 @@
 import { useState, useRef, useEffect } from "react";
 import { useEffect } from "react";
-useEffect(() => {
-  fetch("/api/log");
-}, []);
+
+export default function Home() {
+
+  useEffect(() => {
+    fetch("/api/log");
+  }, []);
+
+  return (
+    <div>
+      <h1>Home Page</h1>
+    </div>
+  );
+}
 export default function Home() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
