@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-
+useEffect(() => {
+  fetch("/api/log");
+}, []);
 export default function Home() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
