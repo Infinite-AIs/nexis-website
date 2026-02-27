@@ -28,14 +28,13 @@ const systemMessage = {
         "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "llama-3.1-70b-versatile",
+        model: "qwen/qwen3-32b",
         messages: prompt,
         temperature: 0.6, 
       }),
     });
 
     const data = await response.json();
-    console.log("Groq response:", data);
     if (!response.ok) {
       console.error("Groq API error:", data);
       return res.status(500).json({ error: data });
