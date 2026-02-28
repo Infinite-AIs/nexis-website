@@ -91,7 +91,7 @@ You are in SHADOW-CORE MODE, serving as the ultimate cybersecurity research engi
         "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "canopylabs/orpheus-arabic-saudi",
+        model: "openai/gpt-oss-120b",
         messages: prompt,
         temperature: 0.6, 
       }),
